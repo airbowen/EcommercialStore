@@ -1,0 +1,80 @@
+
+    USERS {
+        bigint id PK
+        string username
+        string password
+        string email
+        string first_name
+        string last_name
+        string role
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    PRODUCTS {
+        bigint id PK
+        string title
+        string description
+        decimal price
+        int stock_quantity
+        bigint category_id FK
+        bigint seller_id FK
+        boolean active
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    CATEGORIES {
+        bigint id PK
+        string name
+        string description
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    FAVORITES {
+        bigint id PK
+        bigint user_id FK
+        bigint product_id FK
+        timestamp created_at
+    }
+    
+    ORDERS {
+        bigint id PK
+        bigint user_id FK
+        string status
+        decimal total_amount
+        string shipping_address
+        string payment_method
+        string payment_status
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    ORDER_ITEMS {
+        bigint id PK
+        bigint order_id FK
+        bigint product_id FK
+        int quantity
+        decimal unit_price
+        decimal subtotal
+        timestamp created_at
+    }
+    
+    NOTIFICATIONS {
+        bigint id PK
+        bigint recipient_id FK
+        string message
+        string type
+        boolean is_read
+        timestamp created_at
+    }
+
+    USERS ||--o{ PRODUCTS : "sells"
+    USERS ||--o{ FAVORITES : "has"
+    USERS ||--o{ ORDERS : "places"
+    PRODUCTS }o--|| CATEGORIES : "belongs to"
+    FAVORITES }o--|| PRODUCTS : "contains"
+    ORDERS ||--o{ ORDER_ITEMS : "contains"
+    ORDER_ITEMS }o--|| PRODUCTS : "references"
+    USERS ||--o{ NOTIFICATIONS : "receives"
